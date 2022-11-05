@@ -17,7 +17,7 @@ import java.util.Optional;
 public class SkillController {
 
    @Autowired
-        private SkillRepository skillRepository;
+        public SkillRepository skillRepository;
         @GetMapping("")
         public String index (Model model){
             model.addAttribute("skill", skillRepository.findAll());
