@@ -16,10 +16,10 @@ import java.util.Optional;
 @RequestMapping("skills")
 public class SkillController {
 
-   
+   @Autowired
         private SkillRepository skillRepository;
         @GetMapping("")
-        public String displayAllskills (Model model){
+        public String index (Model model){
             model.addAttribute("skill", skillRepository.findAll());
             return "/index";
         };
@@ -31,7 +31,7 @@ public class SkillController {
         }
 
         @PostMapping("add")
-        public String processAddskillForm(@ModelAttribute @Valid Skill newskill,
+        public String processAddSkillForm(@ModelAttribute @Valid Skill newskill,
                                              Errors errors, Model model) {
 
             if (errors.hasErrors()) {
@@ -42,7 +42,7 @@ public class SkillController {
         }
 
         @GetMapping("view/{skillId}")
-        public String displayViewskill(Model model, @PathVariable int skillId) {
+        public String displayViewSkill(Model model, @PathVariable int skillId) {
 
             Optional optSkill = skillRepository.findById(skillId);
             if (optSkill.isPresent()) {
