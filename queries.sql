@@ -10,3 +10,4 @@ SELECT name FROM employer WHERE location = "St. Louis City";
 DROP TABLE job;
 
 -- Part 4: Test it with SQL
+
