@@ -2,8 +2,10 @@ package org.launchcode.techjobs.persistent.controllers;
 
 import org.launchcode.techjobs.persistent.models.Employer;
 import org.launchcode.techjobs.persistent.models.Job;
+import org.launchcode.techjobs.persistent.models.Skill;
 import org.launchcode.techjobs.persistent.models.data.EmployerRepository;
 import org.launchcode.techjobs.persistent.models.data.JobRepository;
+import org.launchcode.techjobs.persistent.models.data.SkillRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,6 +23,8 @@ import java.util.Optional;
 public class HomeController {
     @Autowired
 public EmployerRepository employerRepository;
+    @Autowired
+    public SkillRepository skillRepository;
 
     @Autowired
     public JobRepository jobRepository;
@@ -44,17 +48,14 @@ public EmployerRepository employerRepository;
 
     @PostMapping("add")
     public String processAddJobForm(@ModelAttribute @Valid Job newJob, Errors errors, Model model, @RequestParam int employerId, @RequestParam List<Integer> skills) {
-
         if (errors.hasErrors()) {
             model.addAttribute("title", "Add Job");
             return "add";
-        } else{
-            Optional<Employer> employerObj = employerRepository.findById(employerId);
-            if (employerObj.isPresent()){
-                Employer employer = employerObj.get();
-                newJob.setEmployer(employer);
-            }
         }
+        Employer jobEmployer = employerRepository.findById(employerId).orElse(new Employer());
+        newJob.setEmployer(jobEmployer);
+        List<Skill> skillObjs = (List<Skill>) skillRepository.findAllById(skills);
+        newJob.setSkills(skillObjs);
         jobRepository.save(newJob);
         return "redirect:";
     }
